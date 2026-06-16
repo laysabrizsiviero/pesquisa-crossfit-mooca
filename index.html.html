@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pesquisa CrossFit Mooca</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+    background: #111111;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .card {
+    background: #1a1a1a;
+    border-radius: 16px;
+    padding: 40px 32px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+  .logo {
+    width: 64px; height: 64px;
+    background: #00A651;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 28px;
+  }
+  h1 { font-size: 22px; font-weight: 600; margin-bottom: 10px; }
+  p { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 28px; }
+  .btn {
+    display: block;
+    background: #00A651;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    padding: 14px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .hint { font-size: 12px; color: rgba(255,255,255,0.25); margin-top: 20px; line-height: 1.5; }
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-top-color: #00A651;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: inline-block;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .auto-msg { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 20px; min-height: 22px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">💪</div>
+  <h1>Pesquisa CrossFit Mooca</h1>
+  <p>Sua opinião constrói o futuro do box.<br>Abrindo o formulário...</p>
+  <div class="auto-msg" id="autoMsg"><span class="spinner"></span> Redirecionando...</div>
+  <a class="btn" href="https://script.google.com/macros/s/AKfycbx1acTs4hKF0qONf-UzTGlX2ZWMpyJA_51J4TzHtO5B82ou_lUlgm7cs_Xh9lTWVDbH/exec" id="btnAcessar">
+    Abrir o formulário →
+  </a>
+  <p class="hint">Se não abrir automaticamente, toque no botão acima. Caso esteja no WhatsApp, abra no Safari ou Chrome.</p>
+</div>
+<script>
+  var TARGET = "https://script.google.com/macros/s/AKfycbx1acTs4hKF0qONf-UzTGlX2ZWMpyJA_51J4TzHtO5B82ou_lUlgm7cs_Xh9lTWVDbH/exec";
+  setTimeout(function() { window.location.href = TARGET; }, 1500);
+  setTimeout(function() {
+    var msg = document.getElementById("autoMsg");
+    if (msg) { msg.innerHTML = "Toque no botão para abrir ↓"; msg.style.color = "rgba(255,255,255,0.6)"; }
+  }, 3000);
+</script>
+</body>
+</html>
