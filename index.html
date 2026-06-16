@@ -5,101 +5,455 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pesquisa CrossFit Mooca</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-    background: #111111;
-    color: #fff;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
-  .card {
-    background: #1a1a1a;
-    border-radius: 16px;
-    padding: 40px 32px;
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
-  }
-  .logo {
-    width: 64px; height: 64px;
-    background: #00A651;
-    border-radius: 16px;
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 24px;
-    font-size: 28px;
-  }
-  h1 { font-size: 22px; font-weight: 600; margin-bottom: 10px; }
-  .sub { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 28px; }
-  .btn {
-    display: block;
-    background: #00A651;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 10px;
-    padding: 16px 24px;
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 16px;
-  }
-  .instrucao {
-    background: #2a2a2a;
-    border-radius: 10px;
-    padding: 16px;
-    font-size: 13px;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.7;
-    text-align: left;
-    margin-top: 8px;
-  }
-  .instrucao strong { color: #fff; }
-  .step {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 8px;
-  }
-  .step:last-child { margin-bottom: 0; }
-  .num {
-    background: #00A651;
-    color: #fff;
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    font-size: 11px;
-    font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap');
+
+:root {
+  --verde: #00A651;
+  --verde-light: #e6f7ee;
+  --verde-mid: #5ecf95;
+  --verde-dark: #007a3c;
+  --preto: #111111;
+  --cinza-100: #f4f4f4;
+  --cinza-200: #EAEAEA;
+  --cinza-400: #9a9a94;
+  --cinza-700: #444;
+  --branco: #ffffff;
+  --erro: #C0392B;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: #f2f2f2; color: var(--preto); line-height: 1.6; }
+
+.cover { background: var(--preto); color: var(--branco); padding: 64px 48px 52px; position: relative; overflow: hidden; }
+.cover::before { content: ''; position: absolute; top: -60px; right: -60px; width: 300px; height: 300px; border-radius: 50%; border: 2px solid rgba(0,166,81,0.2); pointer-events: none; }
+.cover::after { content: ''; position: absolute; top: 20px; right: 20px; width: 140px; height: 140px; border-radius: 50%; border: 2px solid rgba(0,166,81,0.1); pointer-events: none; }
+.cover-label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--verde); margin-bottom: 18px; }
+.cover h1 { font-family: 'DM Serif Display', serif; font-size: 42px; line-height: 1.1; font-weight: 400; margin-bottom: 14px; }
+.cover h1 span { color: var(--verde); }
+.cover-sub { color: rgba(255,255,255,0.45); font-size: 14px; max-width: 460px; margin-bottom: 36px; }
+.cover-meta { display: flex; gap: 28px; flex-wrap: wrap; }
+.cover-meta-item { display: flex; flex-direction: column; gap: 3px; }
+.cover-meta-item .val { font-size: 20px; font-weight: 600; }
+.cover-meta-item .lbl { font-size: 10px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.08em; }
+
+.progress-wrap { background: var(--branco); border-bottom: 1px solid var(--cinza-200); padding: 12px 0; position: sticky; top: 0; z-index: 100; }
+.progress-inner { max-width: 720px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; gap: 12px; }
+.progress-bar-bg { flex: 1; height: 4px; background: var(--cinza-200); border-radius: 2px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: var(--verde); border-radius: 2px; transition: width 0.4s ease; width: 0%; }
+.progress-label { font-size: 11px; color: var(--cinza-400); white-space: nowrap; min-width: 80px; text-align: right; }
+
+.container { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+.intro-box { background: var(--branco); border-left: 4px solid var(--verde); border-radius: 0 12px 12px 0; padding: 24px 28px; margin: 32px 0; font-size: 14px; line-height: 1.8; color: var(--cinza-700); font-style: italic; }
+.intro-box strong { color: var(--preto); font-style: normal; }
+
+.bloco { margin: 40px 0 0; }
+.bloco-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.bloco-badge { background: var(--preto); color: var(--branco); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; }
+.bloco-titulo { font-family: 'DM Serif Display', serif; font-size: 24px; font-weight: 400; }
+.bloco-desc { font-size: 13px; color: var(--cinza-400); margin-top: 1px; }
+
+.q-card { background: var(--branco); border-radius: 12px; padding: 22px 24px; margin-bottom: 14px; border: 1px solid var(--cinza-200); transition: border-color 0.2s; }
+.q-card:focus-within { border-color: var(--verde); }
+.q-card.erro-campo { border-color: var(--erro) !important; }
+.q-num { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--verde); margin-bottom: 5px; }
+.q-texto { font-size: 15px; font-weight: 500; color: var(--preto); margin-bottom: 14px; line-height: 1.4; }
+.q-nota { font-size: 12px; color: var(--cinza-400); margin-top: -10px; margin-bottom: 12px; font-style: italic; }
+.q-obrig { color: var(--erro); margin-left: 2px; }
+.q-card.destaque { background: var(--verde-light); border-color: var(--verde-mid); }
+.q-card.destaque .q-num { color: var(--verde-dark); }
+
+.nps-wrap { display: flex; flex-direction: column; gap: 8px; }
+.nps-nums { display: flex; gap: 5px; flex-wrap: wrap; }
+.nps-btn { width: 42px; height: 42px; border-radius: 8px; border: 1.5px solid var(--cinza-200); background: var(--cinza-100); font-size: 14px; font-weight: 500; color: var(--cinza-700); cursor: pointer; transition: all 0.15s; font-family: 'Inter', sans-serif; }
+.nps-btn:hover { border-color: var(--verde); color: var(--verde); }
+.nps-btn.ativo { background: var(--verde); border-color: var(--verde); color: var(--branco); font-weight: 700; }
+.nps-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--cinza-400); padding: 0 2px; }
+
+.rating-grid { display: flex; flex-direction: column; gap: 8px; }
+.rating-row { display: flex; align-items: center; gap: 12px; }
+.rating-label { font-size: 13px; color: var(--cinza-700); min-width: 190px; }
+.stars-group { display: flex; gap: 4px; }
+.star-btn { width: 32px; height: 32px; border-radius: 6px; border: 1.5px solid var(--cinza-200); background: var(--cinza-100); font-size: 13px; color: var(--cinza-400); cursor: pointer; transition: all 0.12s; font-family: 'Inter', sans-serif; }
+.star-btn:hover, .star-btn.ativo { background: var(--verde); border-color: var(--verde); color: var(--branco); font-weight: 700; }
+
+.likert-wrap { display: flex; gap: 8px; flex-wrap: wrap; }
+.likert-btn { padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(--cinza-200); background: var(--cinza-100); font-size: 13px; color: var(--cinza-700); cursor: pointer; transition: all 0.15s; font-family: 'Inter', sans-serif; }
+.likert-btn:hover { border-color: var(--verde); color: var(--verde); }
+.likert-btn.ativo { background: var(--verde); border-color: var(--verde); color: var(--branco); font-weight: 600; }
+
+.multi-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+.multi-tag { padding: 7px 14px; border-radius: 20px; border: 1.5px solid var(--cinza-200); background: var(--cinza-100); font-size: 13px; color: var(--cinza-700); cursor: pointer; transition: all 0.15s; user-select: none; font-family: 'Inter', sans-serif; }
+.multi-tag:hover { border-color: var(--verde); color: var(--verde); }
+.multi-tag.ativo { background: var(--verde); border-color: var(--verde); color: var(--branco); font-weight: 600; }
+
+textarea { width: 100%; background: var(--cinza-100); border: 1.5px solid var(--cinza-200); border-radius: 8px; padding: 11px 13px; font-size: 14px; color: var(--preto); min-height: 80px; resize: vertical; font-family: 'Inter', sans-serif; transition: border-color 0.2s; line-height: 1.6; }
+textarea:focus { outline: none; border-color: var(--verde); background: var(--branco); }
+textarea::placeholder { color: var(--cinza-400); }
+
+.msg-erro { font-size: 12px; color: var(--erro); margin-top: 6px; display: none; }
+.q-card.erro-campo .msg-erro { display: block; }
+
+.btn-wrap { margin: 36px 0 20px; }
+.btn-enviar { display: inline-flex; align-items: center; gap: 8px; background: var(--verde); color: var(--branco); border: none; border-radius: 10px; padding: 14px 28px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.2s; }
+.btn-enviar:hover { background: var(--verde-dark); }
+.btn-enviar:disabled { background: var(--cinza-400); cursor: not-allowed; }
+.aviso-campos { font-size: 12px; color: var(--erro); margin-top: 10px; display: none; }
+
+.tela-sucesso { display: none; text-align: center; padding: 80px 24px; }
+.sucesso-icon { width: 72px; height: 72px; border-radius: 50%; background: var(--verde-light); color: var(--verde); font-size: 32px; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
+.sucesso-titulo { font-family: 'DM Serif Display', serif; font-size: 32px; font-weight: 400; margin-bottom: 12px; }
+.sucesso-msg { font-size: 15px; color: var(--cinza-700); max-width: 400px; margin: 0 auto; line-height: 1.7; }
+
+.loading-overlay { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.85); z-index: 999; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
+.loading-overlay.ativo { display: flex; }
+.spinner { width: 40px; height: 40px; border: 3px solid var(--cinza-200); border-top-color: var(--verde); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-texto { font-size: 14px; color: var(--cinza-700); }
+
+.rodape { text-align: center; padding: 28px 20px 48px; font-size: 11px; color: var(--cinza-400); }
+
+@media (max-width: 600px) {
+  .cover { padding: 48px 20px 40px; }
+  .cover h1 { font-size: 32px; }
+  .nps-btn { width: 34px; height: 34px; font-size: 13px; }
+  .rating-row { flex-wrap: wrap; }
+  .rating-label { min-width: 100%; }
+}
 </style>
 </head>
 <body>
-<div class="card">
-  <div class="logo">💪</div>
-  <h1>Pesquisa CrossFit Mooca</h1>
-  <p class="sub">Sua opinião constrói o futuro do box.</p>
 
-  <a class="btn" href="https://script.google.com/macros/s/AKfycbx1acTs4hKF0qONf-UzTGlX2ZWMpyJA_51J4TzHtO5B82ou_lUlgm7cs_Xh9lTWVDbH/exec">
-    Abrir o formulário →
-  </a>
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-texto">Enviando sua resposta...</div>
+</div>
 
-  <div class="instrucao">
-    <div class="step">
-      <div class="num">1</div>
-      <div>Toque no botão verde acima</div>
-    </div>
-    <div class="step">
-      <div class="num">2</div>
-      <div>Se aparecer erro, toque nos <strong>três pontinhos ···</strong> no canto da tela</div>
-    </div>
-    <div class="step">
-      <div class="num">3</div>
-      <div>Escolha <strong>"Abrir no Safari"</strong> ou <strong>"Abrir no Chrome"</strong></div>
+<div class="cover" id="coverSection">
+  <div class="container">
+    <div class="cover-label">CrossFit Mooca · Pesquisa Estratégica</div>
+    <h1>Sua voz<br>constrói<br><span>nosso box.</span></h1>
+    <p class="cover-sub">Uma pesquisa honesta para entender o que estamos fazendo bem — e o que podemos fazer muito melhor.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><span class="val">5 blocos</span><span class="lbl">de perguntas</span></div>
+      <div class="cover-meta-item"><span class="val">6–10 min</span><span class="lbl">para responder</span></div>
+      <div class="cover-meta-item"><span class="val">100%</span><span class="lbl">anônimo</span></div>
     </div>
   </div>
 </div>
+
+<div class="progress-wrap" id="progressWrap">
+  <div class="progress-inner">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">Bloco 1 de 5</div>
+  </div>
+</div>
+
+<div class="container" id="formSection">
+  <div class="intro-box">
+    Esta pesquisa é totalmente anônima. <strong>Queremos ouvir a verdade</strong>, inclusive aquilo que talvez você nunca tenha nos contado pessoalmente. Nosso objetivo não é só buscar elogios — queremos entender o que estamos fazendo bem e o que podemos melhorar. Ambos importam igualmente.<br><br>
+    Não há resposta certa ou errada. Só existe a sua.
+  </div>
+
+  <!-- BLOCO 1 -->
+  <div class="bloco" data-bloco="1">
+    <div class="bloco-header">
+      <span class="bloco-badge">Bloco 1</span>
+      <div><div class="bloco-titulo">Termômetro geral</div><div class="bloco-desc">Como você enxerga o CrossFit Mooca hoje?</div></div>
+    </div>
+    <div class="q-card" id="card-nps">
+      <div class="q-num">Pergunta 1</div>
+      <div class="q-texto">Em uma escala de 0 a 10, o quanto você indicaria o CrossFit Mooca para um amigo?<span class="q-obrig">*</span></div>
+      <div class="nps-wrap">
+        <div class="nps-nums" id="npsNums">
+          <button type="button" class="nps-btn" onclick="selecionarNPS(0)">0</button><button type="button" class="nps-btn" onclick="selecionarNPS(1)">1</button><button type="button" class="nps-btn" onclick="selecionarNPS(2)">2</button><button type="button" class="nps-btn" onclick="selecionarNPS(3)">3</button><button type="button" class="nps-btn" onclick="selecionarNPS(4)">4</button><button type="button" class="nps-btn" onclick="selecionarNPS(5)">5</button><button type="button" class="nps-btn" onclick="selecionarNPS(6)">6</button><button type="button" class="nps-btn" onclick="selecionarNPS(7)">7</button><button type="button" class="nps-btn" onclick="selecionarNPS(8)">8</button><button type="button" class="nps-btn" onclick="selecionarNPS(9)">9</button><button type="button" class="nps-btn" onclick="selecionarNPS(10)">10</button>
+        </div>
+        <div class="nps-labels"><span>Jamais indicaria</span><span>Indicaria com certeza</span></div>
+      </div>
+      <div class="msg-erro">Por favor, selecione uma nota de 0 a 10.</div>
+    </div>
+    <div class="q-card destaque">
+      <div class="q-num">Pergunta 2</div>
+      <div class="q-texto">Qual foi o principal motivo da nota que você deu?<span class="q-obrig">*</span></div>
+      <textarea id="motivoNps" placeholder="Conte-nos com suas próprias palavras..." oninput="atualizarProgresso()"></textarea>
+      <div class="msg-erro">Por favor, escreva o motivo da sua nota.</div>
+    </div>
+  </div>
+
+  <!-- BLOCO 2 -->
+  <div class="bloco" data-bloco="2">
+    <div class="bloco-header">
+      <span class="bloco-badge">Bloco 2</span>
+      <div><div class="bloco-titulo">Experiência no box</div><div class="bloco-desc">O que você vive aqui dia a dia</div></div>
+    </div>
+    <div class="q-card" id="card-rating">
+      <div class="q-num">Pergunta 3</div>
+      <div class="q-texto">Avalie os aspectos abaixo de 1 (muito insatisfeito) a 5 (muito satisfeito):<span class="q-obrig">*</span></div>
+      <div class="q-nota">Toque em um número para avaliar cada item.</div>
+      <div class="rating-grid" id="ratingGrid">
+        <div class="rating-row"><span class="rating-label">Qualidade dos coaches</span><div class="stars-group" data-campo="notaCoaches"><button type="button" class="star-btn" onclick="selecionarStar(this,'notaCoaches',1)">1</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaCoaches',2)">2</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaCoaches',3)">3</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaCoaches',4)">4</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaCoaches',5)">5</button></div></div>
+        <div class="rating-row"><span class="rating-label">Programação dos treinos</span><div class="stars-group" data-campo="notaProgramacao"><button type="button" class="star-btn" onclick="selecionarStar(this,'notaProgramacao',1)">1</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaProgramacao',2)">2</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaProgramacao',3)">3</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaProgramacao',4)">4</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaProgramacao',5)">5</button></div></div>
+        <div class="rating-row"><span class="rating-label">Ambiente do box</span><div class="stars-group" data-campo="notaAmbiente"><button type="button" class="star-btn" onclick="selecionarStar(this,'notaAmbiente',1)">1</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaAmbiente',2)">2</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaAmbiente',3)">3</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaAmbiente',4)">4</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaAmbiente',5)">5</button></div></div>
+        <div class="rating-row"><span class="rating-label">Qualidade dos equipamentos</span><div class="stars-group" data-campo="notaEquipamentos"><button type="button" class="star-btn" onclick="selecionarStar(this,'notaEquipamentos',1)">1</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaEquipamentos',2)">2</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaEquipamentos',3)">3</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaEquipamentos',4)">4</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaEquipamentos',5)">5</button></div></div>
+        <div class="rating-row"><span class="rating-label">Organização das aulas</span><div class="stars-group" data-campo="notaOrganizacao"><button type="button" class="star-btn" onclick="selecionarStar(this,'notaOrganizacao',1)">1</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaOrganizacao',2)">2</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaOrganizacao',3)">3</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaOrganizacao',4)">4</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaOrganizacao',5)">5</button></div></div>
+        <div class="rating-row"><span class="rating-label">Limpeza</span><div class="stars-group" data-campo="notaLimpeza"><button type="button" class="star-btn" onclick="selecionarStar(this,'notaLimpeza',1)">1</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaLimpeza',2)">2</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaLimpeza',3)">3</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaLimpeza',4)">4</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaLimpeza',5)">5</button></div></div>
+        <div class="rating-row"><span class="rating-label">Horários disponíveis</span><div class="stars-group" data-campo="notaHorarios"><button type="button" class="star-btn" onclick="selecionarStar(this,'notaHorarios',1)">1</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaHorarios',2)">2</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaHorarios',3)">3</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaHorarios',4)">4</button><button type="button" class="star-btn" onclick="selecionarStar(this,'notaHorarios',5)">5</button></div></div>
+      </div>
+      <div class="msg-erro">Por favor, avalie todos os itens acima.</div>
+    </div>
+    <div class="q-card">
+      <div class="q-num">Pergunta 4</div>
+      <div class="q-texto">De forma geral, o que mais influenciou suas avaliações nas perguntas anteriores?</div>
+      <div class="q-nota">Pode ser um ponto positivo ou negativo.</div>
+      <textarea id="influenciouNotas" placeholder="Conte o que vier à mente..."></textarea>
+    </div>
+    <div class="q-card">
+      <div class="q-num">Pergunta 5</div>
+      <div class="q-texto">O que você mais gosta no CrossFit Mooca?</div>
+      <textarea id="maisgosta" placeholder="Pode ser uma pessoa, um horário, uma sensação..."></textarea>
+    </div>
+  </div>
+
+  <!-- BLOCO 3 -->
+  <div class="bloco" data-bloco="3">
+    <div class="bloco-header">
+      <span class="bloco-badge">Bloco 3</span>
+      <div><div class="bloco-titulo">Comunidade e pertencimento</div><div class="bloco-desc">Como você se sente aqui dentro</div></div>
+    </div>
+    <div class="q-card" id="card-pertencimento">
+      <div class="q-num">Pergunta 6</div>
+      <div class="q-texto">Você sente que faz parte da comunidade do CrossFit Mooca?<span class="q-obrig">*</span></div>
+      <div class="likert-wrap" data-campo="pertencimento">
+        <button type="button" class="likert-btn" onclick="selecionarLikert(this,'pertencimento')">Sim, completamente</button>
+        <button type="button" class="likert-btn" onclick="selecionarLikert(this,'pertencimento')">Em parte</button>
+        <button type="button" class="likert-btn" onclick="selecionarLikert(this,'pertencimento')">Ainda não muito</button>
+        <button type="button" class="likert-btn" onclick="selecionarLikert(this,'pertencimento')">Não me sinto parte</button>
+      </div>
+      <div class="msg-erro">Por favor, selecione uma opção.</div>
+    </div>
+    <div class="q-card" id="card-acolhimento">
+      <div class="q-num">Pergunta 7</div>
+      <div class="q-texto">Você se sente acolhido(a) pelos coaches e pelos outros alunos?<span class="q-obrig">*</span></div>
+      <div class="likert-wrap" data-campo="acolhimento">
+        <button type="button" class="likert-btn" onclick="selecionarLikert(this,'acolhimento')">Sempre</button>
+        <button type="button" class="likert-btn" onclick="selecionarLikert(this,'acolhimento')">Na maioria das vezes</button>
+        <button type="button" class="likert-btn" onclick="selecionarLikert(this,'acolhimento')">Às vezes sim, às vezes não</button>
+        <button type="button" class="likert-btn" onclick="selecionarLikert(this,'acolhimento')">Raramente</button>
+      </div>
+      <div class="msg-erro">Por favor, selecione uma opção.</div>
+    </div>
+    <div class="q-card" id="card-contribuicao">
+      <div class="q-num">Pergunta 8</div>
+      <div class="q-texto">O CrossFit Mooca contribui positivamente para sua rotina além da atividade física?<span class="q-obrig">*</span></div>
+      <div class="q-nota">Pense em saúde mental, amizades, motivação, autoestima...</div>
+      <div class="likert-wrap" data-campo="contribuicao">
+        <button type="button" class="likert-btn" onclick="selecionarLikert(this,'contribuicao')">Sim, muito</button>
+        <button type="button" class="likert-btn" onclick="selecionarLikert(this,'contribuicao')">Sim, um pouco</button>
+        <button type="button" class="likert-btn" onclick="selecionarLikert(this,'contribuicao')">Neutro</button>
+        <button type="button" class="likert-btn" onclick="selecionarLikert(this,'contribuicao')">Não percebo diferença</button>
+      </div>
+      <div class="msg-erro">Por favor, selecione uma opção.</div>
+    </div>
+    <div class="q-card destaque">
+      <div class="q-num">Pergunta 9</div>
+      <div class="q-texto">Se o CrossFit Mooca deixasse de existir amanhã, o que você sentiria falta?</div>
+      <textarea id="sentiria" placeholder="Pode ser qualquer coisa: uma pessoa, um horário, uma sensação, um ritual..."></textarea>
+    </div>
+  </div>
+
+  <!-- BLOCO 4 -->
+  <div class="bloco" data-bloco="4">
+    <div class="bloco-header">
+      <span class="bloco-badge">Bloco 4</span>
+      <div><div class="bloco-titulo">Oportunidades de melhoria</div><div class="bloco-desc">A parte mais importante da pesquisa</div></div>
+    </div>
+    <div class="q-card">
+      <div class="q-num">Pergunta 10</div>
+      <div class="q-texto">O que mais te incomoda hoje no box?</div>
+      <div class="q-nota">Seja honesto(a). Promessa: sem julgamentos.</div>
+      <textarea id="incomoda" placeholder="Pode ser algo pequeno ou grande. Tudo importa."></textarea>
+    </div>
+    <div class="q-card">
+      <div class="q-num">Pergunta 11</div>
+      <div class="q-texto">Existe algo que você gostaria que a gente começasse a fazer?</div>
+      <textarea id="comecar" placeholder="Uma ideia, um serviço, um evento, uma mudança de rotina..."></textarea>
+    </div>
+    <div class="q-card">
+      <div class="q-num">Pergunta 12</div>
+      <div class="q-texto">Existe algo que a gente faz hoje e deveria parar de fazer?</div>
+      <textarea id="parar" placeholder="Algo que atrapalha, que não faz sentido, que incomoda..."></textarea>
+    </div>
+    <div class="q-card destaque">
+      <div class="q-num">Pergunta 13</div>
+      <div class="q-texto">Se você fosse dono(a) do CrossFit Mooca por um dia, qual seria a sua primeira mudança?</div>
+      <textarea id="seEuFosse" placeholder="Pode ser qualquer coisa. Sem filtros."></textarea>
+    </div>
+  </div>
+
+  <!-- BLOCO 5 -->
+  <div class="bloco" data-bloco="5">
+    <div class="bloco-header">
+      <span class="bloco-badge">Bloco 5</span>
+      <div><div class="bloco-titulo">Futuro</div><div class="bloco-desc">O que você quer ver mais por aqui?</div></div>
+    </div>
+    <div class="q-card">
+      <div class="q-num">Pergunta 14</div>
+      <div class="q-texto">O que você gostaria de ver mais no CrossFit Mooca? <span style="color:var(--cinza-400);font-weight:400;font-size:13px;">(escolha quantas quiser)</span></div>
+      <div class="multi-wrap" id="futuroTags">
+        <button type="button" class="multi-tag" onclick="toggleMulti(this)">🏆 Competições internas</button>
+        <button type="button" class="multi-tag" onclick="toggleMulti(this)">🏋️ Clínicas técnicas</button>
+        <button type="button" class="multi-tag" onclick="toggleMulti(this)">📈 Acompanhamento de evolução</button>
+        <button type="button" class="multi-tag" onclick="toggleMulti(this)">🥗 Nutrição</button>
+        <button type="button" class="multi-tag" onclick="toggleMulti(this)">🧘 Mobilidade e flexibilidade</button>
+        <button type="button" class="multi-tag" onclick="toggleMulti(this)">🏃 Corrida</button>
+        <button type="button" class="multi-tag" onclick="toggleMulti(this)">✏️ Outro</button>
+      </div>
+    </div>
+    <div class="q-card destaque">
+      <div class="q-num">Pergunta 15 — Campo livre</div>
+      <div class="q-texto">Existe qualquer outra coisa que você gostaria de nos contar?</div>
+      <div class="q-nota">Este espaço é seu. Pode falar o que quiser — elogio, crítica, ideia, desabafo. A gente lê tudo.</div>
+      <textarea id="livremente" placeholder="..." style="min-height:100px;"></textarea>
+    </div>
+  </div>
+
+  <div class="btn-wrap">
+    <button type="button" class="btn-enviar" onclick="enviarFormulario()">Enviar minha resposta →</button>
+    <div class="aviso-campos" id="avisoObrig">Preencha os campos obrigatórios antes de enviar.</div>
+  </div>
+</div>
+
+<div class="tela-sucesso" id="telaSucesso">
+  <div class="container">
+    <div class="sucesso-icon">✓</div>
+    <div class="sucesso-titulo">Resposta enviada!</div>
+    <p class="sucesso-msg">Obrigado por dedicar seu tempo e sua honestidade.<br>Você está construindo o CrossFit Mooca junto com a gente.</p>
+  </div>
+</div>
+
+<div class="rodape">CrossFit Mooca · Pesquisa anônima · 100% confidencial</div>
+
+<script>
+// ── URL DO APPS SCRIPT — altere se reimplantar ──
+var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1acTs4hKF0qONf-UzTGlX2ZWMpyJA_51J4TzHtO5B82ou_lUlgm7cs_Xh9lTWVDbH/exec";
+
+var respostas = {
+  nps: "",
+  notaCoaches: "", notaProgramacao: "", notaAmbiente: "",
+  notaEquipamentos: "", notaOrganizacao: "", notaLimpeza: "", notaHorarios: "",
+  pertencimento: "", acolhimento: "", contribuicao: ""
+};
+
+function selecionarNPS(val) {
+  respostas.nps = val;
+  document.querySelectorAll(".nps-btn").forEach(function(b) {
+    b.classList.toggle("ativo", parseInt(b.textContent) === val);
+  });
+  document.getElementById("card-nps").classList.remove("erro-campo");
+  atualizarProgresso();
+}
+
+function selecionarStar(btn, campo, val) {
+  respostas[campo] = val;
+  btn.closest(".stars-group").querySelectorAll(".star-btn").forEach(function(b) {
+    b.classList.toggle("ativo", parseInt(b.textContent) === val);
+  });
+  var todos = ["notaCoaches","notaProgramacao","notaAmbiente","notaEquipamentos","notaOrganizacao","notaLimpeza","notaHorarios"].every(function(c){ return respostas[c] !== ""; });
+  if (todos) document.getElementById("card-rating").classList.remove("erro-campo");
+  atualizarProgresso();
+}
+
+function selecionarLikert(btn, campo) {
+  respostas[campo] = btn.textContent.trim();
+  btn.closest(".likert-wrap").querySelectorAll(".likert-btn").forEach(function(b) { b.classList.toggle("ativo", b === btn); });
+  var card = document.getElementById("card-" + campo);
+  if (card) card.classList.remove("erro-campo");
+  atualizarProgresso();
+}
+
+function toggleMulti(btn) { btn.classList.toggle("ativo"); }
+
+function getFuturo() {
+  var r = [];
+  document.querySelectorAll("#futuroTags .multi-tag.ativo").forEach(function(b){ r.push(b.textContent.trim()); });
+  return r;
+}
+
+function atualizarProgresso() {
+  var campos = ["notaCoaches","notaProgramacao","notaAmbiente","notaEquipamentos","notaOrganizacao","notaLimpeza","notaHorarios","pertencimento","acolhimento","contribuicao"];
+  var total = 2 + campos.length;
+  var p = 0;
+  if (respostas.nps !== "") p++;
+  if ((document.getElementById("motivoNps").value||"").trim()) p++;
+  campos.forEach(function(c){ if(respostas[c] !== "") p++; });
+  var pct = Math.round((p/total)*100);
+  document.getElementById("progressFill").style.width = pct + "%";
+  var bloco = pct > 90 ? 5 : pct > 75 ? 4 : pct > 50 ? 3 : pct > 15 ? 2 : 1;
+  document.getElementById("progressLabel").textContent = "Bloco " + bloco + " de 5";
+}
+
+function validarFormulario() {
+  var ok = true;
+  if (respostas.nps === "") { document.getElementById("card-nps").classList.add("erro-campo"); ok = false; }
+  if (!document.getElementById("motivoNps").value.trim()) { document.getElementById("motivoNps").closest(".q-card").classList.add("erro-campo"); ok = false; }
+  var camposStars = ["notaCoaches","notaProgramacao","notaAmbiente","notaEquipamentos","notaOrganizacao","notaLimpeza","notaHorarios"];
+  if (!camposStars.every(function(c){ return respostas[c] !== ""; })) { document.getElementById("card-rating").classList.add("erro-campo"); ok = false; }
+  ["pertencimento","acolhimento","contribuicao"].forEach(function(c){
+    if (!respostas[c]) { document.getElementById("card-"+c).classList.add("erro-campo"); ok = false; }
+  });
+  return ok;
+}
+
+function enviarFormulario() {
+  if (!validarFormulario()) {
+    document.getElementById("avisoObrig").style.display = "block";
+    document.querySelector(".erro-campo").scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  document.getElementById("avisoObrig").style.display = "none";
+  document.getElementById("loadingOverlay").classList.add("ativo");
+
+  var dados = {
+    nps: respostas.nps,
+    motivoNps: document.getElementById("motivoNps").value,
+    notaCoaches: respostas.notaCoaches, notaProgramacao: respostas.notaProgramacao,
+    notaAmbiente: respostas.notaAmbiente, notaEquipamentos: respostas.notaEquipamentos,
+    notaOrganizacao: respostas.notaOrganizacao, notaLimpeza: respostas.notaLimpeza,
+    notaHorarios: respostas.notaHorarios,
+    influenciouNotas: document.getElementById("influenciouNotas").value,
+    maisgosta: document.getElementById("maisgosta").value,
+    pertencimento: respostas.pertencimento, acolhimento: respostas.acolhimento,
+    contribuicao: respostas.contribuicao,
+    sentiria: document.getElementById("sentiria").value,
+    incomoda: document.getElementById("incomoda").value,
+    comecar: document.getElementById("comecar").value,
+    parar: document.getElementById("parar").value,
+    seEuFosse: document.getElementById("seEuFosse").value,
+    futuro: getFuturo(),
+    livremente: document.getElementById("livremente").value
+  };
+
+  fetch(APPS_SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(dados)
+  })
+  .then(function() {
+    document.getElementById("loadingOverlay").classList.remove("ativo");
+    document.getElementById("coverSection").style.display = "none";
+    document.getElementById("progressWrap").style.display = "none";
+    document.getElementById("formSection").style.display = "none";
+    document.getElementById("telaSucesso").style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  })
+  .catch(function() {
+    document.getElementById("loadingOverlay").classList.remove("ativo");
+    alert("Erro ao enviar. Verifique sua conexão e tente novamente.");
+  });
+}
+
+atualizarProgresso();
+</script>
 </body>
 </html>
